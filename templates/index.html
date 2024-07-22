@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+        }
+        h1 {
+            color: #333;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .chat-box {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 20px;
+            background-color: #fafafa;
+        }
+        .chat-box ul {
+            list-style: none;
+            padding: 0;
+        }
+        .chat-box li {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 75%;
+        }
+        .chat-box .user {
+            color: white;
+            background-color: #007bff;
+            align-self: flex-end;
+            text-align: right;
+        }
+        .chat-box .model {
+            color: black;
+            background-color: #e1e1e1;
+            align-self: flex-start;
+        }
+        form {
+            display: flex;
+            width: 100%;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .background-decorations {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .background-decorations::before,
+        .background-decorations::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+        .background-decorations::before {
+            width: 500px;
+            height: 500px;
+            background: #007bff;
+            top: -200px;
+            left: -200px;
+        }
+        .background-decorations::after {
+            width: 300px;
+            height: 300px;
+            background: #ff6b6b;
+            bottom: -150px;
+            right: -150px;
+        }
+        .header-decorations {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(135deg, #007bff, #ff6b6b);
+            z-index: -1;
+            transform: skewY(-3deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="background-decorations"></div>
+    <div class="header-decorations"></div>
+    <h1>Chat with Gemini</h1>
+    <div class="chat-container">
+        <div class="chat-box">
+            <ul>
+                {% if history %}
+                    {% for message in history %}
+                        <li class="{{ message.role }}">{{ message.role }}: {{ message.parts[0]|safe }}</li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+        <form action="/chat" method="post">
+            <input type="text" name="user_input" placeholder="Enter your message" autofocus>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</body>
+</html>
